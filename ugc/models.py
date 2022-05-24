@@ -1,11 +1,12 @@
 from django.db import models
 
 class University(models.Model):
-    name = models.CharField(max_length=100,verbose_name="Назва університету")
+    name = models.CharField(max_length=100, verbose_name="Назва університету")
 
     class Meta:
         verbose_name = "Університет"
         verbose_name_plural="Університети"
+
     def __str__(self):
         return self.name
 
@@ -34,3 +35,6 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.name
+
+# class Files(models.Model):
+#     upload=
