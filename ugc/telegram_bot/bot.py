@@ -44,16 +44,30 @@ def all_callback(update, context):
         university_id = query.data.split(':')[-1]
         context.bot.send_message(chat_id=update.effective_chat.id,
                                 text="Виберіть кафедру",
-                                reply_markup=InlineKeyboardMarkup([list(InlineKeyboardButton(text=k.name, callback_data=f"choose_katedra:{k.id}") for k in Katedra.objects.filter(university_id=university_id))]))
+                                reply_markup=InlineKeyboardMarkup([list(
+                                    InlineKeyboardButton(text=k.name, callback_data=f"choose_katedra:{k.id}")
+                                    for k in Katedra.objects.filter(university_id=university_id))]))
 
     if "choose_katedra" in query.data:
-        katedra_id = query.data.split(':')[-1]
+        katedra__id = query.data.split(':')[-1]
         context.bot.send_message(chat_id=update.effective_chat.id,
                                 text="Виберіть предмет",
-                                reply_markup=InlineKeyboardMarkup([list(InlineKeyboardButton(text=s.name, callback_data=f"choose_subject{s.id}") for s in Subject.objects.filter(katedra_id=katedra_id))]))
-
-
-
+                                reply_markup=InlineKeyboardMarkup([list(
+                                    InlineKeyboardButton(text=s.name, callback_data=f"choose_subject:{s.id}")
+                                    for s in Subject.objects.filter(katedra_id=katedra__id))]))
+    if "choose_subject" in query.data:
+        subject_id = query.data.split(':')[-1]
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                text="Ось список всіх завантажених файлів по даному предмету, вибери файл, який хочеш завантажити",
+                                reply_markup=InlineKeyboardMarkup([list(
+                                InlineKeyboardButton(text=str(f.upload), callback_data=f"choose_file:{f.id}")
+                                for f in Files.objects.filter(subject_id=subject_id))], row_width=1))
+    if "choose_file" in query.data:
+        file_id = query.data.split(':')[-1]
+        file_name = [str(i.upload) for i in Files.objects.filter(id=file_id)]
+        file_name= file_name[0]
+        sending_file = open(f'{file_name}', 'rb')
+        context.bot.send_document(chat_id=update.effective_chat.id, document=sending_file)
 
 
 

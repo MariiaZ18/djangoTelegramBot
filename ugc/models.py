@@ -28,7 +28,7 @@ class Subject(models.Model):
     name=models.CharField(max_length=100, verbose_name="Предмет")
     descr=models.TextField(verbose_name="Додаткова інформація", null=True)
     katedra = models.ForeignKey(Katedra, on_delete=models.PROTECT)
-    upload = models.FileField(null=True)
+    # upload = models.FileField(null=True)
     class Meta:
         verbose_name="Предмет",
         verbose_name_plural="Предмети"
@@ -36,5 +36,12 @@ class Subject(models.Model):
     def __str__(self):
         return self.name
 
-# class Files(models.Model):
-#     upload=
+class Files(models.Model):
+    name=models.CharField(max_length=100, verbose_name="Файл",null=True)
+    upload=models.FileField(null=True,upload_to='media')
+    subject=models.ForeignKey(Subject, on_delete=models.PROTECT)
+    class Meta:
+        verbose_name="Файл"
+        verbose_name_plural="Файли"
+    def __str__(self):
+        return self.name
