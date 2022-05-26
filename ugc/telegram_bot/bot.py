@@ -9,15 +9,11 @@ from ugc.models import *
 
 load_dotenv()
 
-
-
 with open('info.txt', 'r', encoding="utf-8") as f:
     bot_info = f.read()
 
-
 buttons = [[KeyboardButton("Додати файл")], [ KeyboardButton("Переглянути завантажені файли")],[KeyboardButton("Інфо")]]
 info_butt = [[KeyboardButton("Повернутися назад")]]
-
 
 def markup_inline():
     m_l = []
@@ -53,9 +49,13 @@ def mess_handler(update, context):
 
 def downloader(update, context):
     file_n = update.message.document.file_name
-    file = context.bot.getFile(update.message.document.file_id)
-    file.download(file_n)
-    return str(file_n)
+    if context.user_data.get('sub_id'):
+        sub_id = context.user_data['sub_id']
+        file = context.bot.getFile(update.message.document.file_id)
+        file.download(file_n)
+        new_file = Files(name=f"{file_n}", upload=f"{file_n}", subject_id=sub_id)
+        new_file.save()
+
 
 def all_callback(update, context):
     query = update.callback_query
@@ -80,11 +80,11 @@ def all_callback(update, context):
                                 text="Ось список всіх завантажених файлів по даному предмету, вибери файл, який хочеш завантажити",
                                 reply_markup=InlineKeyboardMarkup([list(
                                 InlineKeyboardButton(text=str(f.upload), callback_data=f"choose_file:{f.id}")
-                                for f in Files.objects.filter(subject_id=subject_id))]))
+                                for f in Files.objects.filter(subject_id=subject_id))], row_width=2))
     if "choose_file" in query.data:
         file_id = query.data.split(':')[-1]
         file_name = [str(i.upload) for i in Files.objects.filter(id=file_id)]
-        file_name= file_name[0]
+        file_name=file_name[0]
         sending_file = open(f'{file_name}', 'rb')
         context.bot.send_document(chat_id=update.effective_chat.id, document=sending_file)
         context.bot.send_message(chat_id=update.effective_chat.id, text="Ocь твій файл", reply_markup=ReplyKeyboardMarkup(info_butt, resize_keyboard=True, one_time_keyboard=True))
@@ -106,7 +106,14 @@ def all_callback(update, context):
         sub_id = query.data.split(':')[-1]
         context.bot.send_message(chat_id=update.effective_chat.id,text="Відправ файл у чат)")
         # need file name to upload file to database
-        file_n = "Certificate B1"
-        new_file = Files(name=f"{file_n}", upload=f"{file_n}", subject_id=sub_id)
-        new_file.save()
+        file_n = ""
+        context.user_data['sub_id']=sub_id
+
+
+
+
+
+
+
+
 
