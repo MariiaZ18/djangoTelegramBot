@@ -7,6 +7,6 @@
 ``$ pip install python-telegram-bot --upgrade``<br />
 ### To download the libraries that were used
 `$  pip install -r requirements.txt`
-#About
+# About <br />
 Telegram bot ``@n_notes_bot``  was created to keep notes in the public domain.<br /> That is, you upload your notes to the database and anyone can see them.
 <br /> All files that are sent will be checked by a moderator to avoid spreading the wrong content
