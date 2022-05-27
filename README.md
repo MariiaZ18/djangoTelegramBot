@@ -1,9 +1,9 @@
-#Telegram bot with the administration on Django - NotesBot 
-###Link to the project repository on [GitHub](https://github.com/MariiaZ18/djangoTelegramBot)
+#Telegram bot with the administration on Django - NotesBot <br />
+###Link to the project repository on [GitHub](https://github.com/MariiaZ18/djangoTelegramBot) <br />
 
-###You can read the official documentation for the library `python-telegram-bot` [here](https://docs.python-telegram-bot.org/en/v20.0a0/#)
-#Installing 
-###You can install or upgrade python-telegram-bot via
+###You can read the official documentation for the library `python-telegram-bot` [here](https://docs.python-telegram-bot.org/en/v20.0a0/#) <br />
+#Installing <br />
+###You can install or upgrade python-telegram-bot via <br />
 ``$ pip install python-telegram-bot --upgrade``<br />
 ### To download the libraries that were used
 `$  pip install -r requirements.txt`
