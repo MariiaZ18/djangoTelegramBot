@@ -1,3 +1,4 @@
+
 from django.contrib import admin
 from .models import University, Katedra, Subject,Files
 # Register your models here.
